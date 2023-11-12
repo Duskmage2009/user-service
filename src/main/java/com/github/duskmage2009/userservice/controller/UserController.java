@@ -1,8 +1,10 @@
 package com.github.duskmage2009.userservice.controller;
 
+import com.github.duskmage2009.userservice.DTO.SearchByDateRequest;
 import com.github.duskmage2009.userservice.DTO.UserCreateUpdateDTO;
 import com.github.duskmage2009.userservice.DTO.UserReadDTO;
 import com.github.duskmage2009.userservice.service.UserService;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,19 +22,19 @@ public class UserController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public UserReadDTO create(@RequestBody UserCreateUpdateDTO userCreateUpdateDTO) {
+    public UserReadDTO create(@Valid @RequestBody UserCreateUpdateDTO userCreateUpdateDTO) {
         return userService.create(userCreateUpdateDTO);
     }
 
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public UserReadDTO fullUpdate(@RequestBody UserCreateUpdateDTO userCreateUpdateDTO, @PathVariable("id") Long id) {
+    public UserReadDTO fullUpdate(@Valid @RequestBody UserCreateUpdateDTO userCreateUpdateDTO, @PathVariable("id") Long id) {
         return userService.fullUpdate(userCreateUpdateDTO, id);
     }
 
     @PatchMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public UserReadDTO partialUpdate(@RequestBody UserCreateUpdateDTO userCreateUpdateDTO, @PathVariable("id") Long id) {
+    public UserReadDTO partialUpdate(@Valid @RequestBody UserCreateUpdateDTO userCreateUpdateDTO, @PathVariable("id") Long id) {
         return userService.partialUpdate(userCreateUpdateDTO, id);
     }
 
@@ -44,8 +46,8 @@ public class UserController {
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public List<UserReadDTO> searchByBirthDateBetween(LocalDate from, LocalDate to) {
-        return userService.searchByBirthDateBetween(from, to);
+    public List<UserReadDTO> searchByBirthDateBetween(@Valid SearchByDateRequest searchByDateRequest) {
+        return userService.searchByBirthDateBetween(searchByDateRequest.getFrom(),searchByDateRequest.getTo());
     }
 }
 

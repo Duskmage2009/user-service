@@ -4,8 +4,11 @@ import com.github.duskmage2009.userservice.DTO.UserCreateUpdateDTO;
 import com.github.duskmage2009.userservice.DTO.UserReadDTO;
 import com.github.duskmage2009.userservice.entity.User;
 import com.github.duskmage2009.userservice.repository.UserRepository;
+import jakarta.validation.constraints.AssertTrue;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.function.Executable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
@@ -71,8 +74,15 @@ class UserServiceImplTest {
                 .lastName("Lohanto")
                 .birthDate(LocalDate.of(2022, 1, 1))
                 .phoneNumber("123123123").build();
-                User saveUser = userRepository.save(user);
-                UserReadDTO userReadDTO =
+        User savedUser = userRepository.save(user);
+        UserReadDTO userReadDTO = userService.partialUpdate(userCreateUpdateDTO, savedUser.getId());
+        assertEquals(userCreateUpdateDTO.getAddress(), userReadDTO.getAddress());
+        assertEquals(userCreateUpdateDTO.getEmail(), userReadDTO.getEmail());
+        assertEquals(savedUser.getId(), userReadDTO.getId());
+        assertEquals(userCreateUpdateDTO.getFirstName(), userReadDTO.getFirstName());
+        assertEquals(userCreateUpdateDTO.getLastName(), userReadDTO.getLastName());
+        assertEquals(userCreateUpdateDTO.getPhoneNumber(), userReadDTO.getPhoneNumber());
+        assertEquals(userCreateUpdateDTO.getBirthDate(), userReadDTO.getBirthDate());
     }
 
     @Test
@@ -106,6 +116,19 @@ class UserServiceImplTest {
 
     @Test
     void delete() {
+        User user1 = new User();
+
+        Assertions.assertThrows(RuntimeException.class, () -> userService.delete(1L));
+        User user = User.builder()
+                .email("newmail@com")
+                .address("goodmoon3")
+                .firstName("Konstans")
+                .lastName("Kioto")
+                .birthDate(LocalDate.of(2022, 3, 3))
+                .phoneNumber("13264568768")
+                .build();
+        User savedUser = userRepository.save(user);
+
     }
 
     @Test

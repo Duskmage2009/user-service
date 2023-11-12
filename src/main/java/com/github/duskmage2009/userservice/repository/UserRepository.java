@@ -7,7 +7,9 @@ import org.springframework.data.repository.query.Param;
 
 import java.time.LocalDate;
 import java.util.List;
+
 public interface UserRepository extends JpaRepository<User, Long> {
-    @Query(value = "SELECT * from users where birth_date  between :from AND :to",nativeQuery = true)
-    List<User> dateRange(@Param("from") LocalDate from, @Param("to") LocalDate to);
+    @Query(value = "SELECT * from users where birth_date  between :from AND :to", nativeQuery = true)
+    List<User> findAllByBirthDateBetween(@Param("from") LocalDate from, @Param("to") LocalDate to);
+
 }
