@@ -4,21 +4,20 @@ import com.github.duskmage2009.userservice.DTO.UserCreateUpdateDTO;
 import com.github.duskmage2009.userservice.DTO.UserReadDTO;
 import com.github.duskmage2009.userservice.entity.User;
 import com.github.duskmage2009.userservice.repository.UserRepository;
-import jakarta.validation.constraints.AssertTrue;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.function.Executable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
-class UserServiceImplTest {
+class UserServiceIT {
     @Autowired
     UserService userService;
     @Autowired
@@ -30,14 +29,6 @@ class UserServiceImplTest {
 
     @Test
     void create() {
-        User user = User.builder().id(1L)
-                .email("mail@ua")
-                .address("MJ")
-                .firstName("Jonn")
-                .lastName("Lohanto")
-                .birthDate(LocalDate.of(2022, 1, 1))
-                .phoneNumber("123123123")
-                .build();
         UserCreateUpdateDTO userCreateUpdateDTO = UserCreateUpdateDTO.builder()
                 .email("mail@ua")
                 .address("MJ")
@@ -64,15 +55,15 @@ class UserServiceImplTest {
                 .address("goodmoon3")
                 .firstName("Konstans")
                 .lastName("Kioto")
-                .birthDate(LocalDate.of(2022, 3, 3))
+                .birthDate(LocalDate.of(2020, 3, 3))
                 .phoneNumber("13264568768")
                 .build();
         UserCreateUpdateDTO userCreateUpdateDTO = UserCreateUpdateDTO.builder()
-                .email("mail@ua")
+                .email("trevor@ua")
                 .address("MJ")
                 .firstName("Jonn")
                 .lastName("Lohanto")
-                .birthDate(LocalDate.of(2022, 1, 1))
+                .birthDate(LocalDate.of(2020, 1, 1))
                 .phoneNumber("123123123").build();
         User savedUser = userRepository.save(user);
         UserReadDTO userReadDTO = userService.partialUpdate(userCreateUpdateDTO, savedUser.getId());
@@ -88,19 +79,19 @@ class UserServiceImplTest {
     @Test
     void fullUpdate() {
         User user = User.builder()
-                .email("newmail@com")
+                .email("jovanni@com")
                 .address("goodmoon3")
                 .firstName("Konstans")
                 .lastName("Kioto")
-                .birthDate(LocalDate.of(2022, 3, 3))
+                .birthDate(LocalDate.of(2019, 3, 3))
                 .phoneNumber("13264568768")
                 .build();
         UserCreateUpdateDTO userCreateUpdateDTO = UserCreateUpdateDTO.builder()
-                .email("mail@ua")
+                .email("holopenio@ua")
                 .address("MJ")
                 .firstName("Jonn")
                 .lastName("Lohanto")
-                .birthDate(LocalDate.of(2022, 1, 1))
+                .birthDate(LocalDate.of(2020, 1, 1))
                 .phoneNumber("123123123").build();
         User savedUser = userRepository.save(user);
         UserReadDTO userReadDTO = userService.fullUpdate(userCreateUpdateDTO, savedUser.getId());
@@ -116,18 +107,24 @@ class UserServiceImplTest {
 
     @Test
     void delete() {
-        User user1 = new User();
-
-        Assertions.assertThrows(RuntimeException.class, () -> userService.delete(1L));
         User user = User.builder()
-                .email("newmail@com")
-                .address("goodmoon3")
-                .firstName("Konstans")
-                .lastName("Kioto")
-                .birthDate(LocalDate.of(2022, 3, 3))
-                .phoneNumber("13264568768")
+                .email("jovanni@com")
+                .address("Kongo")
+                .firstName("Alba")
+                .lastName("Jonas")
+                .birthDate(LocalDate.of(2018, 3, 3))
+                .phoneNumber("878887778877")
                 .build();
+
         User savedUser = userRepository.save(user);
+        userService.delete(savedUser.getId());
+        Optional<User> userOptional = userRepository.findById(savedUser.getId());
+        Assertions.assertTrue(userOptional.isEmpty());
+    }
+
+    @Test
+    void deleteException() {
+        Assertions.assertThrows(RuntimeException.class, () -> userService.delete(-1L));
 
     }
 

@@ -16,6 +16,7 @@ public @interface CheckDate {
     public String message() default "From should be less than too";
 
     public Class<?>[] groups() default {};
-    public Class<? extends Payload> [] payload() default {};
+
+    public Class<? extends Payload>[] payload() default {};
 }
 

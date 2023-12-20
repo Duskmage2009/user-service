@@ -17,11 +17,11 @@ import java.time.LocalDate;
 @Builder
 public class UserCreateUpdateDTO {
     @NotBlank(message = "Email is required")
-    @Email(message = "Email is not valid",regexp="^[a-zA-Z0-9_!#$%&amp;'*+/=?`{|}~^-]+(?:\\.[a-zA-Z0-9_!#$%&amp;'*+/=?`{|}~^-]+)*@[a-zA-Z0-9-]+(?:\\.[a-zA-Z0-9-]+)*$")
+    @Email(message = "Email is not valid", regexp = "^[a-zA-Z0-9_!#$%&amp;'*+/=?`{|}~^-]+(?:\\.[a-zA-Z0-9_!#$%&amp;'*+/=?`{|}~^-]+)*@[a-zA-Z0-9-]+(?:\\.[a-zA-Z0-9-]+)*$")
     private String email;
     @NotBlank(message = "Name is required")
     private String firstName;
-    @NotBlank (message = "Last name is required")
+    @NotBlank(message = "Last name is required")
     private String lastName;
     @NotNull(message = "Birthdate is required ")
     @CheckAge

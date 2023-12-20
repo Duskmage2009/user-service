@@ -16,5 +16,6 @@ public @interface CheckAge {
     public String message() default "Age must be more than [18] years old";
 
     public Class<?>[] groups() default {};
-    public Class<? extends Payload> [] payload() default {};
+
+    public Class<? extends Payload>[] payload() default {};
 }

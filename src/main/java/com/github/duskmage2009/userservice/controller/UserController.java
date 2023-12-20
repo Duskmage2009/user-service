@@ -47,7 +47,7 @@ public class UserController {
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
     public List<UserReadDTO> searchByBirthDateBetween(@Valid SearchByDateRequest searchByDateRequest) {
-        return userService.searchByBirthDateBetween(searchByDateRequest.getFrom(),searchByDateRequest.getTo());
+        return userService.searchByBirthDateBetween(searchByDateRequest.getFrom(), searchByDateRequest.getTo());
     }
 }
 

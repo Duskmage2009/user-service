@@ -33,15 +33,15 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserReadDTO partialUpdate(UserCreateUpdateDTO userCreateUpdateDTO, Long id) {
         Optional<User> optionalUser = userRepository.findById(id);
-        User user = optionalUser.orElseThrow(()->new UserNotFoundException(id));
-        this.userMapper.updateUserFromCreateUpdateDTO(userCreateUpdateDTO, user);
+        User user = optionalUser.orElseThrow(() -> new UserNotFoundException(id));
+        userMapper.updateUserFromCreateUpdateDTO(userCreateUpdateDTO, user);
         User baseUser = userRepository.save(user);
         return userMapper.mapFromUserToReadDTO(baseUser);
     }
 
     @Override
     public UserReadDTO fullUpdate(UserCreateUpdateDTO userCreateUpdateDTO, Long id) {
-        userRepository.findById(id).orElseThrow(()-> new UserNotFoundException(id));
+        userRepository.findById(id).orElseThrow(() -> new UserNotFoundException(id));
         User user = userMapper.mapFromCreateUpdateDTOToUser(userCreateUpdateDTO);
         user.setId(id);
         User baseUser = userRepository.save(user);
